@@ -59,6 +59,7 @@
         print_r($_SESSION["Grafo"]->GetMatriz());
 
      ?>
+     
 
 </body>
 </html>
