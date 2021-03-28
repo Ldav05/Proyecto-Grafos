@@ -166,6 +166,22 @@ include('Vertice.php');
 		}
 
 
+		public function Mostrar($n){
+
+		    echo "<b>Recorrido de Matriz Adyacencia :</b></br>";
+
+		    foreach ($n->GetMatriz() as $Nd => $valAy) {
+		    	echo "<br>".$Nd.":";
+		    	if ($valAy != null) {
+		    		foreach ($valAy as $idO => $valObj) {
+		    			echo " | ".$idO ." | ".$valObj." | ";
+		    		}
+		    	}
+		    }
+
+		}
+
+
 	}
 
 

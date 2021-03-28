@@ -22,13 +22,21 @@
 <div class=titulo><h2> PROYECTO GRAFOS</h2></div>
 
 <form class="Vertice" action="index.php" method="post">
-<h4>Agregar Vertice</h4>
+    <h4>Agregar Vertice</h4>
 
-<input class="item"  placeholder=" Id del vertice "  type="text"  name="id_ver"><br><br>
-
-<input class="Botom"  type="submit" value="Agregar vertice" name="AgregarV">
+    <input class="item"  placeholder=" Id del vertice "  type="text"  name="id_ver"><br><br>
+    <input class="Botom"  type="submit" value="Agregar vertice" name="AgregarV">
 
 </form>
+
+<?php 
+
+    if (isset($_POST["id_ver"])) {
+        $v = new Vertice($_POST["id_ver"]);
+        $n = $_SESSION["Grafo"]->AgregarVertice($v);
+    }
+
+?>
 
 <form class="Arista" action = "index.php" method = "post">
 
@@ -40,6 +48,17 @@
     <input class="Botom"  type="submit" value="Agregar arista" name="AgregarA">
 
 </form>
+
+
+    <?php 
+
+        if (isset($_POST["v_origen"]) && isset($_POST["v_destino"]) && isset($_POST["peso"])) {
+            $_SESSION["Grafo"]->AgregarArista($_POST["v_origen"],$_POST["v_destino"],$_POST["peso"]);
+        }
+
+        print_r($_SESSION["Grafo"]->GetMatriz());
+
+     ?>
 
 </body>
 </html>
