@@ -7,6 +7,9 @@ include('Vertice.php');
 		private $matrizA;
 		private $vectorO;
 		private $dirigido;
+		private $vecvert = null;
+		private $vecarist = null;
+
 		
 		public function __construct($dir = true){
 			$this->matrizA = null;
@@ -30,6 +33,18 @@ include('Vertice.php');
 		public function GetVertice($v){
 
 			return $this->vectorO[$v];
+
+		}
+
+		public function GetVectorvisvert(){
+
+			return $this->vecvert;
+
+		}
+
+		public function GetVectorVisArist(){
+
+			return $this->$vecarist;
 
 		}
 
@@ -182,7 +197,28 @@ include('Vertice.php');
 		}
 
 
+   public function visualisar_vertice($vert){
+
+	if(!isset($this->vecvert[$vert])){
+
+		$this->vecvert[$vert] = $vert;
+
 	}
+}
+ 
+
+public function visualisar_arista($arist, $origen, $destino, $peso){
+
+     if(!isset($this->vecarist[$arist])){
+
+	     $this->vecarist[$arist] = "{from: '".$origen."' , to: '" .$destino. "', label: " .$peso."}, ";
+		 
+
+}
+
+   }
+
+}
 
 
 ?>
