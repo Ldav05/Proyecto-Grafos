@@ -14,8 +14,17 @@
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <script type="text/javascript" src="vis/dist/vis.js"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Proyecto Grafos</title>
+
+    <style type="text/css">
+        #Grafo{
+            width: 600px;
+            height: 400px;
+            border: 1px solid lightgray;
+        }
+    </style>
 </head>
 <body>
 
@@ -59,6 +68,78 @@
         print_r($_SESSION["Grafo"]->GetMatriz());
 
      ?>
+
+
+
+     <div id ="Grafo">
+         
+     </div>
+
+
+
+        <script type="text/javascript">
+
+            var nodos = new vis.DataSet([
+                <?php
+                    $Mtriz = $_SESSION["Grafo"]->GetMatriz();
+                    $cont = 1;
+                    foreach ($Mtriz as $key => $value) {
+                        if ($cont == count($_SESSION["Grafo"]->GetMatriz())) {
+                            echo "{id : '$key', label: '$key'}";
+                        }else{
+                            echo "{id : '$key', label: '$key'},";
+                        }
+                        $cont++;
+                    };
+                ?>
+                ]);
+
+            var aristas = new vis.DataSet([
+                <?php
+                    $Mtriz = $_SESSION["Grafo"]->GetMatriz();
+
+                    foreach ($Mtriz as $key => $value) {
+                        if ($value != null) {
+                            foreach ($value as $Val => $Aris) {
+                                if ($Aris == null) {
+                                    echo "{from: '$key', to: '$Val', label: '$Aris'}";
+                                }else{
+                                    echo "{from: '$key', to: '$Val', label: '$Aris'},";
+                                }       
+                            };
+                        }
+                    };
+                ?>
+                ]);
+
+            var contenedor = document.getElementById("Grafo");
+
+            var opciones = {
+                edges:{
+                    arrows:{
+                        to:{
+                            enabled:true
+                        }
+                    }
+                },
+                configure:{
+                    enabled:true,
+                    container:undefined,
+                    showButton:true
+                }
+            };
+
+            var datos = {
+                nodes: nodos,
+                edges: aristas
+            };
+
+
+            var grafo = new vis.Network(contenedor,datos,opciones);
+
+
+
+        </script>
 
 </body>
 </html>
