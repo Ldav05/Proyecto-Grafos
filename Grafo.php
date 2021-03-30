@@ -36,6 +36,8 @@ include('Vertice.php');
 
 		public function AgregarVertice($v){
 
+
+		if($v != null){	
 			if(!isset($this->vectorO[$v->Getid()])){
 
 				$this->matrizA[$v->Getid()] = null;
@@ -49,7 +51,13 @@ include('Vertice.php');
 
 			return true;
 
+		}else{
+
+			return false;
+
 		}
+
+	}
 
 		public function AgregarArista($O,$D,$p = null){
 
