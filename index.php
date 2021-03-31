@@ -115,67 +115,67 @@
 
      <script type="text/javascript">
 
-var nodos = new vis.DataSet([
-    <?php
-        $Mtriz = $_SESSION["Grafo"]->GetMatriz();
-        $cont = 1;
-        foreach ($Mtriz as $key => $value) {
-            if ($cont == count($_SESSION["Grafo"]->GetMatriz())) {
-                echo "{id : '$key', label: '$key'}";
-            }else{
-                echo "{id : '$key', label: '$key'},";
+    var nodos = new vis.DataSet([
+        <?php
+            $Mtriz = $_SESSION["Grafo"]->GetMatriz();
+            $cont = 1;
+            foreach ($Mtriz as $key => $value) {
+                if ($cont == count($_SESSION["Grafo"]->GetMatriz())) {
+                    echo "{id : '$key', label: '$key'}";
+                }else{
+                    echo "{id : '$key', label: '$key'},";
+                }
+                $cont++;
+            };
+        ?>
+        ]);
+
+    var aristas = new vis.DataSet([
+        <?php
+            $Mtriz = $_SESSION["Grafo"]->GetMatriz();
+
+            foreach ($Mtriz as $key => $value) {
+                if ($value != null) {
+                    foreach ($value as $Val => $Aris) {
+                        if ($Aris == null) {
+                            echo "{from: '$key', to: '$Val', label: '$Aris'}";
+                        }else{
+                            echo "{from: '$key', to: '$Val', label: '$Aris'},";
+                        }       
+                    };
+                }
+            };
+        ?>
+        ]);
+
+    var contenedor = document.getElementById("Grafo");
+
+    var opciones = {
+        edges:{
+            arrows:{
+                to:{
+                    enabled:true
+                }
             }
-            $cont++;
-        };
-    ?>
-    ]);
+        }/*,
+        configure:{
+            enabled:true,
+            container:undefined,
+            showButton:true
+        }*/
+    };
 
-var aristas = new vis.DataSet([
-    <?php
-        $Mtriz = $_SESSION["Grafo"]->GetMatriz();
-
-        foreach ($Mtriz as $key => $value) {
-            if ($value != null) {
-                foreach ($value as $Val => $Aris) {
-                    if ($Aris == null) {
-                        echo "{from: '$key', to: '$Val', label: '$Aris'}";
-                    }else{
-                        echo "{from: '$key', to: '$Val', label: '$Aris'},";
-                    }       
-                };
-            }
-        };
-    ?>
-    ]);
-
-var contenedor = document.getElementById("Grafo");
-
-var opciones = {
-    edges:{
-        arrows:{
-            to:{
-                enabled:true
-            }
-        }
-    }/*,
-    configure:{
-        enabled:true,
-        container:undefined,
-        showButton:true
-    }*/
-};
-
-var datos = {
-    nodes: nodos,
-    edges: aristas
-};
+    var datos = {
+        nodes: nodos,
+        edges: aristas
+    };
 
 
-var grafo = new vis.Network(contenedor,datos,opciones);
+    var grafo = new vis.Network(contenedor,datos,opciones);
 
 
 
-</script>
+    </script>
 
 
      <form class="ver_vertice" action="index.php" method="post">
@@ -197,44 +197,29 @@ var grafo = new vis.Network(contenedor,datos,opciones);
 
             var nodos = new vis.DataSet([
                 <?php
-/*
-                if(isset($_POST["ver_adyacentes"]) && isset($_POST["VerAd"])!=null){
-
+                    if(isset($_POST["ver_adyacentes"]) && isset($_POST["VerAd"])!=null){
 
                     $p = $_POST["ver_adyacentes"];
-                    echo "{id: '$id', label: '$id' },";
+                    echo "{id: '$p', label: '$p' },";
                 
                     $Mtriz = $_SESSION["Grafo"]->GetAdyacentes($_POST["ver_adyacentes"]);
      
-        foreach ($Mtriz as $key => $value) {
-            
-                echo "{id : '$key', label: '$key'},";
-            }
-        
-        }
-    */
+                    foreach ($Mtriz as $key => $value) {
+                            echo "{id : '$key', label: '$key'},";
+                    };
+                }
                 ?>
                 ]);
 
-            var aristas = new vis.DataSet([
+            var arista = new vis.DataSet([
                 <?php
-
-                    /*
-
+                if(isset($_POST["ver_adyacentes"]) && isset($_POST["VerAd"])!=null){
                     $Mtriz = $_SESSION["Grafo"]->GetAdyacentes($_POST["ver_adyacentes"]);
-
+                    $Nodo = $_POST["ver_adyacentes"];
                     foreach ($Mtriz as $key => $value) {
-                        if ($value != null) {
-                            foreach ($value as $Val => $Aris) {
-                                if ($Aris == null) {
-                                    echo "{from: '$key', to: '$Val', label: '$Aris'}";
-                                }else{
-                                    echo "{from: '$key', to: '$Val', label: '$Aris'},";
-                                }       
-                            };
-                        }
-                    };
-                        */
+                            echo "{from: '$Nodo', to: '$key', label: '$value'},";     
+                        };
+                    }
                 ?>
                 ]);
 
@@ -257,7 +242,7 @@ var grafo = new vis.Network(contenedor,datos,opciones);
 
             var datos = {
                 nodes: nodos,
-                edges: aristas
+                edges: arista
             };
 
 
