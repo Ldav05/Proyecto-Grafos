@@ -44,6 +44,7 @@
 
     <input class="item"  placeholder=" Id del vertice "  type="text"  name="id_ver"><br><br>
     <input class="Botom"  type="submit" value="Agregar vertice" name="AgregarV">
+    <input class="Botom"  type="submit" value="Ver Grado Vertice" name="Ver_Vertice">
     <input class="Botom"  type="submit" value="Eliminar vertice" name="EliminarV">
 
 </form><br><hr>
@@ -60,6 +61,11 @@
         
         $_SESSION["Grafo"]->EliminarVertice($_POST["id_ver"]);
 
+    }
+
+
+    if (isset($_POST["id_ver"]) && isset($_POST["Ver_Vertice"])!=null) {
+        echo "El valor del grado ".$_POST["id_ver"]." Es de ".$_SESSION["Grafo"]->Grado($_POST["id_ver"]);
     }
 
 
