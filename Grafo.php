@@ -84,7 +84,11 @@ include('Vertice.php');
 
 		public function Grado_Salida($v){
 
-			return count($this->matrizA[$v]);
+			if ($this->matrizA[$v]==null) {
+				return $s=0;
+			}else{
+				return count($this->matrizA[$v]);
+			}
 
 		}
 
