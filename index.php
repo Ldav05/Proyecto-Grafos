@@ -16,19 +16,27 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <script type="text/javascript" src="vis/dist/vis.js"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="Style.css">
     <title>Proyecto Grafos</title>
 
     <style type="text/css">
         #Grafo{
-            width: 600px;
-            height: 400px;
+            width: 400px;
+            height: 345px;
             border: 1px solid lightgray;
+            border-radius: 15px;
+            margin-top: -707px;
+            margin-left: 900px;
+
         }
 
         #Grafo2{
-            width: 600px;
-            height: 400px;
+            width: 400px;
+            height: 199px;
             border: 1px solid lightgray;
+            border-radius: 15px;
+            margin-left: 900px;
+            margin-top: -218px;
         }
 
         
@@ -47,7 +55,7 @@
     <input class="Botom"  type="submit" value="Ver Grado Vertice" name="Echo">
     <input class="Botom"  type="submit" value="Eliminar vertice" name="Echo">
 
-</form><br><hr>
+</form><br>
 
 <?php 
 
@@ -116,16 +124,66 @@
     <input class="Botom"  type="submit" value="Agregar arista" name="Capturar">
     <input class="Botom"  type="submit" value="Eliminar arista" name="Capturar">
 
-</form><br><hr>
+</form><br>
 
 <form class="ver_vertice" action="index.php" method="post">
     
     <h4>Ver vertice</h4>
 
-    <input class = "item" placeholder= "Vertice para ver" type= "text" name="vertice_ver">
+    <input class = "item" placeholder= "Vertice para ver" type= "text" name="vertice_aver">
     <input class = "Botom" type = "submit" value = "Ver vertice"  name="VerV">
     
-    </form><br><hr>
+    </form><br>
+
+    <?php
+
+  if(isset($_POST["vertice_aver"]) && isset($_POST["VerV"])!=null){
+
+    $mat = $_SESSION["Grafo"]->GetMatriz();
+ 
+
+ 
+    foreach ($mat as $key => $value ) {
+       
+        if ($key == $_POST["vertice_aver"]) {
+            
+            $vert = $_SESSION["Grafo"]->GetVertice($_POST["vertice_aver"]);
+        
+  
+        $visited =  $vert->Getvisitado();
+        $id = $vert->getid();
+                                    
+            if ($visited == true){
+
+                $m1 =  "El vertice ". $id. " visitado";
+                echo "<script type='text/javascript'>alert('$m1');</script>";
+
+             
+            } else{
+    
+                $m2 =  "El vertice ". $id. " no ha sido visitado";
+                echo "<script type='text/javascript'>alert('$m2');</script>";
+
+    
+
+                } 
+             
+       
+         
+   }else{
+    echo "<script type='text/javascript'>alert('El vertice no existe');</script>";
+       break;
+   }
+ }
+}
+
+
+
+
+    ?> 
+
+
+
 
 
 
@@ -164,11 +222,11 @@
                 break;
             
             default:
-                # code...
+               
                 break;
         }
 
-        print_r($_SESSION["Grafo"]->GetMatriz());
+        
 
 
 
@@ -176,7 +234,7 @@
 
 
    
-    <br><hr><br>
+    <br><br>
 
     <h3>Grafo</h3><br>
      <div id ="Grafo"></div>
@@ -248,12 +306,12 @@
     </script>
 
 
-     <form class="ver_vertice" action="index.php" method="post">
+<form class="Adyacentes" action="index.php" method="post">
     
     <h4>Ver adyacentes</h4>
 
     <input class = "item" placeholder= "Vertice" type= "text" name="ver_adyacentes">
-    <input class = "Botom" type = "submit" value = "Ver vertice"  name="VerAd">
+    <input class = "Botom" type = "submit" value = "Ver adyacente"  name="VerAd">
     
     </form><br>
     
