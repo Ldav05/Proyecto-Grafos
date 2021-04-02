@@ -77,14 +77,16 @@
                     $v = new Vertice($_POST["id_ver"]);
                     $n = $_SESSION["Grafo"]->AgregarVertice($v);
                 }
+
+                if ($n==false) {
+                    $Ndos= "El vertice ya existe";
+                }else{
+                    $Ndos = "Vertice Agregado Correctamente";
+                }
+    
             }
 
-            if ($n==false) {
-                $Ndos= "El vertice ya existe";
-            }else{
-                $Ndos = "Vertice Agregado Correctamente";
-            }
-
+            
             echo "<script type='text/javascript'>alert('$Ndos');</script>";
 
             break;
@@ -147,6 +149,10 @@
 
 <?php
 
+if (empty($_POST["vertice_aver"])) {
+
+    echo "<script type='text/javascript'>alert('Ingresa el vertice a ver');</script>";
+}else{
   if(isset($_POST["vertice_aver"]) && isset($_POST["VerV"])!=null){
 
     $mat = $_SESSION["Grafo"]->GetMatriz();
@@ -181,6 +187,7 @@
             break;
         }
     }
+}
 }
 
 
