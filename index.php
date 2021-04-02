@@ -327,13 +327,23 @@
                     if(isset($_POST["ver_adyacentes"]) && isset($_POST["VerAd"])!=null){
 
                     $p = $_POST["ver_adyacentes"];
-                    echo "{id: '$p', label: '$p' },";
                 
                     $Mtriz = $_SESSION["Grafo"]->GetAdyacentes($_POST["ver_adyacentes"]);
-     
+
+                    $cont=0;
+
                     foreach ($Mtriz as $key => $value) {
-                            echo "{id : '$key', label: '$key'},";
+                        echo "{id : '$key', label: '$key'},";
+                            if ($key == $p) {
+                                $cont=1;
+                            }else{
+                                $cont=2;
+                            }
                     };
+
+                    if ($cont==2) {
+                        echo "{id: '$p', label: '$p' },";
+                    }
                 }
                 ?>
                 ]);
@@ -343,9 +353,9 @@
                 <?php
                 if(isset($_POST["ver_adyacentes"]) && isset($_POST["VerAd"])!=null){
                     $Mtriz = $_SESSION["Grafo"]->GetAdyacentes($_POST["ver_adyacentes"]);
-                    $Nodo = $_POST["ver_adyacentes"];
+                    $p = $_POST["ver_adyacentes"];
                     foreach ($Mtriz as $key => $value) {
-                            echo "{from: '$Nodo', to: '$key', label: '$value'},";     
+                            echo "{from: '$p', to: '$key', label: '$value'},";     
                         };
                     }
                 ?>
