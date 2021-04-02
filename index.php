@@ -25,8 +25,10 @@
             height: 345px;
             border: 1px solid lightgray;
             border-radius: 15px;
-            margin-top: -707px;
+            margin-top: -671px;
             margin-left: 900px;
+            position: relative;
+            background: #ffffff6c;
 
         }
 
@@ -37,6 +39,8 @@
             border-radius: 15px;
             margin-left: 900px;
             margin-top: -218px;
+            position: relative;
+            background: #ffffff6c;
         }
 
         
@@ -235,7 +239,7 @@
    
     <br><br>
 
-    <h3>Grafo</h3><br>
+    <h3>By: Double L</h3><br>
      <div id ="Grafo"></div>
 
      <br>
