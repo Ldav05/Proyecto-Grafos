@@ -149,7 +149,9 @@
 
 <?php
 
-if (empty($_POST["vertice_aver"])) {
+if(isset($_POST["vertice_aver"]) && isset($_POST["VerV"])!=null){
+
+    if (empty($_POST["vertice_aver"])) {
 
     echo "<script type='text/javascript'>alert('Ingresa el vertice a ver');</script>";
 }else{
@@ -189,7 +191,7 @@ if (empty($_POST["vertice_aver"])) {
     }
 }
 }
-
+}
 
 
 
