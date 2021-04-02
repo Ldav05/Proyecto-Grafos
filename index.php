@@ -43,29 +43,64 @@
     <h4>Vertices</h4>
 
     <input class="item"  placeholder=" Id del vertice "  type="text"  name="id_ver"><br><br>
-    <input class="Botom"  type="submit" value="Agregar vertice" name="AgregarV">
-    <input class="Botom"  type="submit" value="Ver Grado Vertice" name="Ver_Vertice">
-    <input class="Botom"  type="submit" value="Eliminar vertice" name="EliminarV">
+    <input class="Botom"  type="submit" value="Agregar vertice" name="Echo">
+    <input class="Botom"  type="submit" value="Ver Grado Vertice" name="Echo">
+    <input class="Botom"  type="submit" value="Eliminar vertice" name="Echo">
 
 </form><br><hr>
 
 <?php 
 
-    if (isset($_POST["id_ver"]) && isset($_POST["AgregarV"])!=null) {
-        $v = new Vertice($_POST["id_ver"]);
-        $n = $_SESSION["Grafo"]->AgregarVertice($v);
-    }
+    
+    $action = (isset($_POST["Echo"]))?$_POST["Echo"]:"";
 
-    if(isset($_POST["id_ver"]) && isset($_POST["EliminarV"])!=null){
+    switch ($action) {
+        case 'Agregar vertice':
+                    
+            if (empty($_POST["id_ver"])) {
+                $Ndos="Ingrese un valor para agregar";
+            }else{
+                if (isset($_POST["id_ver"])) {
+                    $v = new Vertice($_POST["id_ver"]);
+                    $n = $_SESSION["Grafo"]->AgregarVertice($v);
+                    $Ndos = "Vertice Agregado Correctamente";
+                }
+            }
 
+            echo "<script type='text/javascript'>alert('$Ndos');</script>";
+
+            break;
+
+        case 'Ver Grado Vertice':
+
+            if (empty($_POST["id_ver"])) {
+                $msj = "Ingrese un valor para buscar";
+            }else{
+                $msj = "El valor del grado ".$_POST["id_ver"]." Es de ".$_SESSION["Grafo"]->Grado($_POST["id_ver"]);
+            }
+
+            echo "<script type='text/javascript'>alert('$msj');</script>";
+
+
+            break;
+
+
+        case 'Eliminar vertice':
+
+            if(empty($_POST["id_ver"])){
+                $msj = "Ingrese un valor para eliminar";
+            }else{
+                $_SESSION["Grafo"]->EliminarVertice($_POST["id_ver"]);
+                $msj = "Vertice Eliminado Correctamente";
+            }
+
+            echo "<script type='text/javascript'>alert('$msj');</script>";
+
+            break;
         
-        $_SESSION["Grafo"]->EliminarVertice($_POST["id_ver"]);
-
-    }
-
-
-    if (isset($_POST["id_ver"]) && isset($_POST["Ver_Vertice"])!=null) {
-        echo "El valor del grado ".$_POST["id_ver"]." Es de ".$_SESSION["Grafo"]->Grado($_POST["id_ver"]);
+        default:
+            # code...
+            break;
     }
 
 
@@ -78,8 +113,8 @@
     <input class = "item" placeholder = "Vertice de origen" type = "text" name = "v_origen">
     <input class = "item" placeholder = "Vertice destino" type = "text" name = "v_destino">
     <input class = "item" placeholder = "Peso" type = "text" name = "peso"><br><br>
-    <input class="Botom"  type="submit" value="Agregar arista" name="AgregarA">
-    <input class="Botom"  type="submit" value="Eliminar arista" name="EliminarA">
+    <input class="Botom"  type="submit" value="Agregar arista" name="Capturar">
+    <input class="Botom"  type="submit" value="Eliminar arista" name="Capturar">
 
 </form><br><hr>
 
@@ -96,12 +131,41 @@
 
     <?php 
 
-        if (isset($_POST["v_origen"]) && isset($_POST["v_destino"]) && isset($_POST["peso"]) && isset($_POST["AgregarA"])!=null) {
-            $_SESSION["Grafo"]->AgregarArista($_POST["v_origen"],$_POST["v_destino"],$_POST["peso"]);
-        }
 
-        if (isset($_POST["v_origen"]) && isset($_POST["v_destino"]) && isset($_POST["peso"]) && isset($_POST["EliminarA"])!=null) {
-            $_SESSION["Grafo"]->EliminarArista($_POST["v_origen"],$_POST["v_destino"]);
+        $capturar = (isset($_POST["Capturar"]))?$_POST["Capturar"]:"";
+
+        $msj="";
+
+        switch ($capturar) {
+            case 'Agregar arista':
+                        
+                if (empty($_POST["v_origen"]) && empty($_POST["v_destino"])) {
+                    $msj = "Error Vertice Origen o Destino vacio";
+                }else{
+                    $_SESSION["Grafo"]->AgregarArista($_POST["v_origen"],$_POST["v_destino"],$_POST["peso"]);
+                    $msj = "Arista Agregada Correctamente";
+                }
+
+                echo "<script type='text/javascript'>alert('$msj');</script>";
+
+                break;
+
+            case 'Eliminar arista':
+
+                if (empty($_POST["v_origen"]) && isset($_POST["v_destino"])) {
+                    $msj = "Error Vertice Origen o Destino vacio";
+                }else{
+                    $_SESSION["Grafo"]->EliminarArista($_POST["v_origen"],$_POST["v_destino"]);
+                    $msj = "Arista Eliminada Correctamente";
+                }
+
+                echo "<script type='text/javascript'>alert('$msj');</script>";
+
+                break;
+            
+            default:
+                # code...
+                break;
         }
 
         print_r($_SESSION["Grafo"]->GetMatriz());
@@ -144,7 +208,7 @@
                 if ($value != null) {
                     foreach ($value as $Val => $Aris) {
                         if ($Aris == null) {
-                            echo "{from: '$key', to: '$Val', label: '$Aris'}";
+                            echo "{from: '$key', to: '$Val'},";
                         }else{
                             echo "{from: '$key', to: '$Val', label: '$Aris'},";
                         }       
