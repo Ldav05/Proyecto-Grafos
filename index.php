@@ -61,6 +61,7 @@
 
     
     $action = (isset($_POST["Echo"]))?$_POST["Echo"]:"";
+    $n = null;
 
     switch ($action) {
         case 'Agregar vertice':
@@ -71,8 +72,13 @@
                 if (isset($_POST["id_ver"])) {
                     $v = new Vertice($_POST["id_ver"]);
                     $n = $_SESSION["Grafo"]->AgregarVertice($v);
-                    $Ndos = "Vertice Agregado Correctamente";
                 }
+            }
+
+            if ($n==false) {
+                $Ndos= "El vertice ya existe";
+            }else{
+                $Ndos = "Vertice Agregado Correctamente";
             }
 
             echo "<script type='text/javascript'>alert('$Ndos');</script>";
@@ -135,7 +141,7 @@
     
     </form><br>
 
-    <?php
+<?php
 
   if(isset($_POST["vertice_aver"]) && isset($_POST["VerV"])!=null){
 
@@ -164,26 +170,19 @@
                 $m2 =  "El vertice ". $id. " no ha sido visitado";
                 echo "<script type='text/javascript'>alert('$m2');</script>";
 
-    
-
-                } 
-             
-       
-         
-   }else{
-    echo "<script type='text/javascript'>alert('El vertice no existe');</script>";
-       break;
-   }
- }
+            } 
+         break;
+        }else{
+            echo "<script type='text/javascript'>alert('El vertice no existe');</script>";
+            break;
+        }
+    }
 }
 
 
 
 
-    ?> 
-
-
-
+?> 
 
 
 
@@ -193,14 +192,18 @@
         $capturar = (isset($_POST["Capturar"]))?$_POST["Capturar"]:"";
 
         $msj="";
+        $valor = null;
 
         switch ($capturar) {
             case 'Agregar arista':
                         
                 if (empty($_POST["v_origen"]) && empty($_POST["v_destino"])) {
-                    $msj = "Error Vertice Origen o Destino vacio";
+                    $msj = "Error No Existe El Vertice Origen o Destino";
                 }else{
-                    $_SESSION["Grafo"]->AgregarArista($_POST["v_origen"],$_POST["v_destino"],$_POST["peso"]);
+                    $valor = $_SESSION["Grafo"]->AgregarArista($_POST["v_origen"],$_POST["v_destino"],$_POST["peso"]);
+                }
+
+                if ($valor == true) {
                     $msj = "Arista Agregada Correctamente";
                 }
 
@@ -225,10 +228,6 @@
                
                 break;
         }
-
-        
-
-
 
      ?>
 
@@ -338,6 +337,7 @@
                 }
                 ?>
                 ]);
+
 
             var arista = new vis.DataSet([
                 <?php
