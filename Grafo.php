@@ -122,7 +122,6 @@ include('Vertice.php');
 
 			$val = $this->Grado_Entrada($v) + $this->Grado_Salida($v);
 
-
 			return $val;
 
 		}

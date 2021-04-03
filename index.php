@@ -93,6 +93,7 @@
 
         case 'Ver Grado Vertice':
 
+
             if (empty($_POST["id_ver"])) {
                 $msj = "Ingrese un valor para buscar";
             }else{
@@ -107,11 +108,15 @@
 
         case 'Eliminar vertice':
 
-            if(empty($_POST["id_ver"])){
+
+            $p = $_SESSION["Grafo"]->EliminarVertice($_POST["id_ver"]);
+
+            if ($p == false) {
                 $msj = "Ingrese un valor para eliminar";
             }else{
-                $_SESSION["Grafo"]->EliminarVertice($_POST["id_ver"]);
-                $msj = "Vertice Eliminado Correctamente";
+                if(isset($_POST["id_ver"])){
+                    $msj = "Vertice Eliminado Correctamente";
+                }
             }
 
             echo "<script type='text/javascript'>alert('$msj');</script>";
@@ -210,14 +215,14 @@ if(isset($_POST["vertice_aver"]) && isset($_POST["VerV"])!=null){
         switch ($capturar) {
             case 'Agregar arista':
                         
-                if (empty($_POST["v_origen"]) && empty($_POST["v_destino"])) {
-                    $msj = "Error No Existe El Vertice Origen o Destino";
-                }else{
-                    $valor = $_SESSION["Grafo"]->AgregarArista($_POST["v_origen"],$_POST["v_destino"],$_POST["peso"]);
-                }
-
+                $valor = $_SESSION["Grafo"]->AgregarArista($_POST["v_origen"],$_POST["v_destino"],$_POST["peso"]);
+                
                 if ($valor == true) {
                     $msj = "Arista Agregada Correctamente";
+                }else{
+                    if (isset($_POST["v_origen"]) && isset($_POST["v_destino"])) {
+                    $msj = "Error No Existe El Vertice Origen o Destino";
+                    }
                 }
 
                 echo "<script type='text/javascript'>alert('$msj');</script>";
@@ -226,11 +231,14 @@ if(isset($_POST["vertice_aver"]) && isset($_POST["VerV"])!=null){
 
             case 'Eliminar arista':
 
-                if (empty($_POST["v_origen"]) && isset($_POST["v_destino"])) {
-                    $msj = "Error Vertice Origen o Destino vacio";
+                $p = $_SESSION["Grafo"]->EliminarArista($_POST["v_origen"],$_POST["v_destino"]);
+
+                if (isset($_POST["v_origen"]) && isset($_POST["v_destino"]) && $p == false) {
+                    $msj = "Error Vertice Origen o Destino vacio o no existe";
                 }else{
-                    $_SESSION["Grafo"]->EliminarArista($_POST["v_origen"],$_POST["v_destino"]);
-                    $msj = "Arista Eliminada Correctamente";
+                    if ($p == true) {
+                        $msj = "Arista Eliminada Correctamente";
+                    }
                 }
 
                 echo "<script type='text/javascript'>alert('$msj');</script>";
@@ -343,18 +351,11 @@ if(isset($_POST["vertice_aver"]) && isset($_POST["VerV"])!=null){
                 
                     $Mtriz = $_SESSION["Grafo"]->GetAdyacentes($_POST["ver_adyacentes"]);
 
-                    $cont=0;
-
                     foreach ($Mtriz as $key => $value) {
                         echo "{id : '$key', label: '$key'},";
-                            if ($key == $p) {
-                                $cont=1;
-                            }else{
-                                $cont=2;
-                            }
                     };
 
-                    if ($cont==2) {
+                    if (!isset($Mtriz[$p])) {
                         echo "{id: '$p', label: '$p' },";
                     }
                 }
