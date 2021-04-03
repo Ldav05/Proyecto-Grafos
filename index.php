@@ -71,7 +71,7 @@
         case 'Agregar vertice':
                     
             if (empty($_POST["id_ver"])) {
-                $Ndos="Ingrese un valor para agregar";
+                $Ndos="Campo vacio";
             }else{
                 if (isset($_POST["id_ver"])) {
                     $v = new Vertice($_POST["id_ver"]);
@@ -93,14 +93,46 @@
 
         case 'Ver Grado Vertice':
 
-
             if (empty($_POST["id_ver"])) {
-                $msj = "Ingrese un valor para buscar";
+                echo "<script type='text/javascript'>alert('Campo vacio');</script>"; 
             }else{
-                $msj = "El valor del grado ".$_POST["id_ver"]." Es de ".$_SESSION["Grafo"]->Grado($_POST["id_ver"]);
-            }
+                
+         $mat = $_SESSION["Grafo"]->GetMatriz();
+ 
+                if ($mat == null) {
 
-            echo "<script type='text/javascript'>alert('$msj');</script>";
+                    echo "<script type='text/javascript'>alert('No existe el vertice');</script>"; 
+
+                }else{
+
+                    $vali = false;
+ 
+         foreach ($mat as $key => $value ) {
+       
+        if ($key == $_POST["id_ver"]) {
+
+                $msj = "El valor del grado ".$_POST["id_ver"]." Es de ".$_SESSION["Grafo"]->Grado($_POST["id_ver"]);
+                echo "<script type='text/javascript'>alert('$msj');</script>"; 
+                $valid = false;
+                break;
+            }else{
+
+            $valid = true;
+
+            }
+            
+
+        } 
+
+        if ($valid == true) {
+
+            echo "<script type='text/javascript'>alert('El vertice no existe');</script>"; 
+            
+        }
+            
+        
+    }
+}
 
 
             break;
@@ -108,11 +140,16 @@
 
         case 'Eliminar vertice':
 
+            if (empty($_POST["id_ver"])) {
+            
+                echo "<script type='text/javascript'>alert('Campo vacio');</script>"; 
+
+        }else{
 
             $p = $_SESSION["Grafo"]->EliminarVertice($_POST["id_ver"]);
-
+               
             if ($p == false) {
-                $msj = "Ingrese un valor para eliminar";
+                $msj = "El vertice no existe";
             }else{
                 if(isset($_POST["id_ver"])){
                     $msj = "Vertice Eliminado Correctamente";
@@ -121,12 +158,15 @@
 
             echo "<script type='text/javascript'>alert('$msj');</script>";
 
+        }
+
             break;
         
         default:
             # code...
             break;
     }
+
 
 
 ?>
@@ -158,21 +198,27 @@ if(isset($_POST["vertice_aver"]) && isset($_POST["VerV"])!=null){
 
     if (empty($_POST["vertice_aver"])) {
 
-    echo "<script type='text/javascript'>alert('Ingresa el vertice a ver');</script>";
+    echo "<script type='text/javascript'>alert('Campo vacío');</script>";
 }else{
+
   if(isset($_POST["vertice_aver"]) && isset($_POST["VerV"])!=null){
 
     $mat = $_SESSION["Grafo"]->GetMatriz();
  
+       if($mat == null){
 
+        echo "<script type='text/javascript'>alert('El vertice no existe');</script>";
+
+       }else{
+
+        $valid = false;
  
     foreach ($mat as $key => $value ) {
        
         if ($key == $_POST["vertice_aver"]) {
-            
-            $vert = $_SESSION["Grafo"]->GetVertice($_POST["vertice_aver"]);
-        
-  
+
+        $valid = false;
+        $vert = $_SESSION["Grafo"]->GetVertice($_POST["vertice_aver"]);
         $visited =  $vert->Getvisitado();
         $id = $vert->getid();
                                     
@@ -190,13 +236,24 @@ if(isset($_POST["vertice_aver"]) && isset($_POST["VerV"])!=null){
             } 
          break;
         }else{
-            echo "<script type='text/javascript'>alert('El vertice no existe');</script>";
-            break;
+
+            $valid = true;
+    
         }
+        
     }
+
+    if($valid == true){
+
+        echo "<script type='text/javascript'>alert('El vertice no existe');</script>";
+
+    }
+    
 }
 }
 }
+}
+
 
 
 
@@ -206,50 +263,62 @@ if(isset($_POST["vertice_aver"]) && isset($_POST["VerV"])!=null){
 
     <?php 
 
+$capturar = (isset($_POST["Capturar"]))?$_POST["Capturar"]:"";
 
-        $capturar = (isset($_POST["Capturar"]))?$_POST["Capturar"]:"";
+$msj="";
+$valor = null;
 
-        $msj="";
-        $valor = null;
+switch ($capturar) {
+    case 'Agregar arista':
 
-        switch ($capturar) {
-            case 'Agregar arista':
-                        
-                $valor = $_SESSION["Grafo"]->AgregarArista($_POST["v_origen"],$_POST["v_destino"],$_POST["peso"]);
+        if (empty($_POST["v_origen"]) && empty($_POST["v_destino"])) {
+
+            echo "<script type='text/javascript'>alert('Campos vacios');</script>";
+        }else{
                 
-                if ($valor == true) {
-                    $msj = "Arista Agregada Correctamente";
-                }else{
-                    if (isset($_POST["v_origen"]) && isset($_POST["v_destino"])) {
-                    $msj = "Error No Existe El Vertice Origen o Destino";
-                    }
-                }
-
-                echo "<script type='text/javascript'>alert('$msj');</script>";
-
-                break;
-
-            case 'Eliminar arista':
-
-                $p = $_SESSION["Grafo"]->EliminarArista($_POST["v_origen"],$_POST["v_destino"]);
-
-                if (isset($_POST["v_origen"]) && isset($_POST["v_destino"]) && $p == false) {
-                    $msj = "Error Vertice Origen o Destino vacio o no existe";
-                }else{
-                    if ($p == true) {
-                        $msj = "Arista Eliminada Correctamente";
-                    }
-                }
-
-                echo "<script type='text/javascript'>alert('$msj');</script>";
-
-                break;
-            
-            default:
-               
-                break;
+        $valor = $_SESSION["Grafo"]->AgregarArista($_POST["v_origen"],$_POST["v_destino"],$_POST["peso"]);
+        
+        if ($valor == true) {
+            $msj = "Arista Agregada Correctamente";
+        }else{
+            if (isset($_POST["v_origen"]) && isset($_POST["v_destino"])) {
+            $msj = "Error No Existe El Vertice Origen o Destino";
+            }
         }
 
+        echo "<script type='text/javascript'>alert('$msj');</script>";
+
+    }
+        break;
+
+    case 'Eliminar arista':
+
+        
+        if (empty($_POST["v_origen"]) && empty($_POST["v_destino"])) {
+
+            echo "<script type='text/javascript'>alert('Campos vacios');</script>";
+        }else{
+                
+
+        $p = $_SESSION["Grafo"]->EliminarArista($_POST["v_origen"],$_POST["v_destino"]);
+
+        if (isset($_POST["v_origen"]) && isset($_POST["v_destino"]) && $p == false) {
+            $msj = "Error Vertice Origen o Destino vacio o no existe";
+        }else{
+            if ($p == true) {
+                $msj = "Arista Eliminada Correctamente";
+            }
+        }
+
+        echo "<script type='text/javascript'>alert('$msj');</script>";
+    }
+
+        break;
+    
+    default:
+       
+        break;
+}
      ?>
 
 
@@ -339,23 +408,82 @@ if(isset($_POST["vertice_aver"]) && isset($_POST["VerV"])!=null){
 
      <div id ="Grafo2"></div>
 
+    <?php 
+    
+    if(isset($_POST["VerAd"])!=null){
+    if (empty($_POST["ver_adyacentes"])) {
 
+        echo "<script type='text/javascript'>alert('Campo vacío');</script>";
+      }else{
+                
+        $mat = $_SESSION["Grafo"]->GetMatriz();
 
+               if ($mat == null) {
+
+                   echo "<script type='text/javascript'>alert('No existe el vertice');</script>"; 
+
+               }else{
+
+                   $vali = false;
+
+        foreach ($mat as $key => $value ) {
+      
+       if ($key == $_POST["ver_adyacentes"]) {
+
+              
+             
+               $valid = false;
+               break;
+           }else{
+
+           $valid = true;
+
+           }
+           
+
+       } 
+
+       if ($valid == true) {
+
+           echo "<script type='text/javascript'>alert('El vertice no existe');</script>"; 
+           
+       }
+           
+       
+   }  if(($mat[($_POST["ver_adyacentes"])]) == null){
+
+    echo "<script type='text/javascript'>alert('El vertice no posee adyacentes');</script>"; 
+
+   }
+}
+
+    }      
+    
+    ?>
+ 
         <script type="text/javascript">
 
             var nodos = new vis.DataSet([
                 <?php
+                
                     if(isset($_POST["ver_adyacentes"]) && isset($_POST["VerAd"])!=null){
 
                     $p = $_POST["ver_adyacentes"];
                 
                     $Mtriz = $_SESSION["Grafo"]->GetAdyacentes($_POST["ver_adyacentes"]);
 
+                    $cont=0;
+
                     foreach ($Mtriz as $key => $value) {
                         echo "{id : '$key', label: '$key'},";
+                            if ($key == $p) {
+                                $cont=1;
+                            }else{
+                                $cont=2;
+                            }
                     };
 
-                    if (!isset($Mtriz[$p])) {
+                    if ($cont==2) {
                         echo "{id: '$p', label: '$p' },";
                     }
                 }
