@@ -415,10 +415,18 @@ if(isset($_POST["vertice_aver"]) && isset($_POST["VerV"])!=null){
 
         $msj="";
 
+        
+
         switch ($Adyacente) {
                 case 'Ver adyacente':
                                 
                     if (isset($_POST["ver_adyacentes"]) && isset($_POST["Echo"])) {
+
+                        if (empty($_POST["ver_adyacentes"])) {
+
+                            echo "<script type='text/javascript'>alert('Campo vacio');</script>";
+                            
+                        }else{
 
                         $Mtriz = $_SESSION["Grafo"]->GetMatriz();
                         $p = $_POST["ver_adyacentes"];
@@ -442,13 +450,16 @@ if(isset($_POST["vertice_aver"]) && isset($_POST["VerV"])!=null){
                             }
                         }
                     }
+                }
 
                     break;
 
                 default:
                     # code...
                     break;
-            }      
+            }  
+            
+        
     
     ?>
  
