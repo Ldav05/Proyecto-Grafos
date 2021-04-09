@@ -193,6 +193,111 @@ include('Vertice.php');
 		}
 
 
+		
+		public function Recorrer_anchura($n){
+
+			$cola = new SplQueue();
+	
+				if ($n != null) {
+	
+					$cola->enqueue($n);
+	
+					while ($cola->count() > 0) {
+						$nodov = $cola->dequeue();
+	
+						if ($nodov->Getvisitado() == false) {
+							$nodov->Setvisitado(true);
+	
+							echo $nodov->Getid();  //En duda
+	
+							$cola->enqueue($nodov); //En duda
+	
+						}
+					}
+	
+				}
+	
+			}
+	
+	
+			public function Recorrer_profundidad($n){  
+	
+			$pila = new SplStack();
+	
+				if ($n != null) {
+	
+					$pila->push($n);
+	
+					while ($pila->count() > 0) {
+						$nodov = $pila->pop();
+	
+						if ($nodov->Getvisitado() == false) {
+	
+							$nodov->Setvisitado(true);
+	
+							echo $nodov->Getid();  //En duda
+							$pila->push($nodov);   //En duda
+	
+	
+						}
+					}
+				}
+	
+			}
+	
+	
+	
+			public function caminoMasCorto($a,$b){
+	
+				$S = array();
+	
+				$Q = array();
+	
+				foreach(array_keys($this->matrizA) as $val) $Q[$val] = 99999;
+	
+				$Q[$a] = 0;
+	
+				//inicio calculo
+	
+				while(!empty($Q)){
+	
+					$min = array_search(min($Q), $Q);
+	
+					if($min == $b) break;
+	
+					foreach($this->matrizA[$min] as $key=>$val) if(!empty($Q[$key]) && $Q[$min] + $val < $Q[$key]) {
+	
+						$Q[$key] = $Q[$min] + $val;
+	
+						$S[$key] = array($min, $Q[$key]);
+	
+					}
+	
+					unset($Q[$min]);
+	
+				}
+	
+				$path = array();
+	
+				$pos = $b;
+	
+				while($pos != $a){
+	
+					$path[] = $pos;
+	
+					$pos = $S[$pos][0];
+	
+				}
+	
+				$path[] = $a;
+	
+				$path = array_reverse($path);
+	
+				return $path;
+	
+			}
+	
+
 	}
 
 
