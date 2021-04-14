@@ -63,7 +63,15 @@ include('Vertice.php');
 
 			if(isset($this->vectorO[$O]) && isset($this->vectorO[$D])){
 
-				$this->matrizA[$O][$D] = $p;
+				if($p == null){
+					
+				$this->matrizA[$O][$D] = 1;
+
+				}else{
+
+					$this->matrizA[$O][$D] = $p;
+
+				}
 
 			}else{
 
@@ -194,6 +202,8 @@ include('Vertice.php');
 
 
 		
+
+		
 		public function Recorrer_anchura($n){
 
 			$cola = new SplQueue();
@@ -208,9 +218,23 @@ include('Vertice.php');
 						if ($nodov->Getvisitado() == false) {
 							$nodov->Setvisitado(true);
 	
-							echo $nodov->Getid();  //En duda
-	
-							$cola->enqueue($nodov); //En duda
+							echo $nodov->Getid();  
+
+					   		  $mat = self::GetAdyacentes($nodov->Getid());
+							    
+							if ($mat != null) {
+								
+					
+							foreach($mat as $key => $value) {
+								
+								$ver = self::GetVertice($key);
+    
+								$cola->enqueue($ver);
+								
+							}
+
+						}
+							
 	
 						}
 					}
@@ -235,12 +259,26 @@ include('Vertice.php');
 	
 							$nodov->Setvisitado(true);
 	
-							echo $nodov->Getid();  //En duda
-							$pila->push($nodov);   //En duda
+							echo $nodov->Getid(); 
+							$mat = self::GetAdyacentes($nodov->Getid());
+							    
+							if ($mat != null) {
+								
+					
+							foreach($mat as $key => $value) {
+								
+								$ver = self::GetVertice($key);
+    
+								$pila->push($ver);
+								
+							}
+
+						}   
 	
 	
 						}
 					}
+					
 				}
 	
 			}
@@ -265,6 +303,8 @@ include('Vertice.php');
 	
 					if($min == $b) break;
 	
+					if ($this->matrizA[$min] != null) {
+						
 					foreach($this->matrizA[$min] as $key=>$val) if(!empty($Q[$key]) && $Q[$min] + $val < $Q[$key]) {
 	
 						$Q[$key] = $Q[$min] + $val;
@@ -272,6 +312,8 @@ include('Vertice.php');
 						$S[$key] = array($min, $Q[$key]);
 	
 					}
+
+				}
 	
 					unset($Q[$min]);
 	
