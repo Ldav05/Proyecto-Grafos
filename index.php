@@ -408,6 +408,8 @@ if(isset($_POST["vertice_aver"]) && isset($_POST["VerV"])!=null){
 
      <div id ="Grafo2"></div>
 
+    
+
     <?php 
 
 
@@ -462,7 +464,48 @@ if(isset($_POST["vertice_aver"]) && isset($_POST["VerV"])!=null){
         
     
     ?>
+
+    <form class="Recorridos" action="index.php" method="post">
+    
+    <h4>Recorridos</h4>
+
+    <input class = "item" placeholder= "Vertice" type= "text" name="nodo">
+    <input class = "item" placeholder= "Vertice" type= "text" name="nodo2">
+    <input class = "Botom" type = "submit" value = "Recorrido de anchura"  name="poranchura">
+    <input class = "Botom" type = "submit" value = "Recorrido de profundidad"  name="porprofundidad">
+    <input class = "Botom" type = "submit" value = "Recorrido más corto"  name="mascorto">
+    
+    </form><br>
+ <?php 
  
+    if(isset($_POST["nodo"]) && isset($_POST["poranchura"])!=null){
+ 
+       $n = $_SESSION["Grafo"]->GetVertice($_POST["nodo"]);
+       $_SESSION["Grafo"]->Recorrer_anchura($n);
+
+ }
+
+ if(isset($_POST["nodo"]) && isset($_POST["porprofundidad"])!=null){
+ 
+    $n = $_SESSION["Grafo"]->GetVertice($_POST["nodo"]);
+    $_SESSION["Grafo"]->Recorrer_profundidad($n);
+
+}
+
+if(isset($_POST["nodo"]) && isset($_POST["nodo"]) && isset($_POST["mascorto"])!=null){
+ 
+    //$a = $_SESSION["Grafo"]->GetVertice($_POST["nodo"]);
+   // $b = $_SESSION["Grafo"]->GetVertice($_POST["nodo2"]);
+  print_r($_SESSION["Grafo"]->caminoMasCorto($_POST["nodo"],$_POST["nodo2"]));
+
+
+
+}
+
+
+
+ 
+ ?>
         <script type="text/javascript">
 
             var nodos = new vis.DataSet([
