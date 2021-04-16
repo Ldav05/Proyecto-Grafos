@@ -231,17 +231,14 @@ include('Vertice.php');
     
 								$cola->enqueue($ver);
 								
-							}
-
-						}
-							
-	
-						}
-					}
-	
 				}
-	
+			  }
 			}
+		  }
+	    }
+
+		self::visitado_original();
+}
 	
 	
 			public function Recorrer_profundidad($n){  
@@ -268,20 +265,17 @@ include('Vertice.php');
 							foreach($mat as $key => $value) {
 								
 								$ver = self::GetVertice($key);
-    
 								$pila->push($ver);
-								
-							}
-
-						}   
-	
-	
-						}
-					}
-					
-				}
-	
+    
+												
+			  }
 			}
+		  }
+		}
+	  }
+
+					  self::visitado_original();
+}
 	
 	
 	
@@ -340,6 +334,15 @@ include('Vertice.php');
 			}
 	
 
+
+			public function visitado_original(){
+				$v =self::GetVector();
+				foreach ($v as $key => $value) {
+					$value->Setvisitado(false);
+				}
+			}
+	
+	
 	}
 
 

@@ -494,11 +494,12 @@ if(isset($_POST["vertice_aver"]) && isset($_POST["VerV"])!=null){
 
 if(isset($_POST["nodo"]) && isset($_POST["nodo"]) && isset($_POST["mascorto"])!=null){
  
-    //$a = $_SESSION["Grafo"]->GetVertice($_POST["nodo"]);
-   // $b = $_SESSION["Grafo"]->GetVertice($_POST["nodo2"]);
-  print_r($_SESSION["Grafo"]->caminoMasCorto($_POST["nodo"],$_POST["nodo2"]));
 
-
+ /* print_r($_SESSION["Grafo"]->caminoMasCorto($_POST["nodo"],$_POST["nodo2"]));
+ / $corto = $_SESSION["Grafo"]->caminoMasCorto($_POST["nodo"],$_POST["nodo2"]);
+  $c = $corto[0];
+  echo $c;
+*/
 
 }
 
@@ -526,6 +527,21 @@ if(isset($_POST["nodo"]) && isset($_POST["nodo"]) && isset($_POST["mascorto"])!=
                         echo "{id: '$p', label: '$p' },";
                     }
                 }
+
+                if(isset($_POST["nodo"]) && isset($_POST["nodo2"]) && isset($_POST["mascorto"])!=null){
+                    $Mtriz = $_SESSION["Grafo"]->GetMatriz();
+                    $corto = $_SESSION["Grafo"]->caminoMasCorto($_POST["nodo"],$_POST["nodo2"]);
+                   
+                    foreach ($Mtriz as $key => $value) {
+                        if(in_array($key,$corto)){
+                        echo "{id: '$key', label: '$key', color:{background:'green'}},";
+                          }else{
+                            echo "{id: '$key', label: '$key'},";
+                          }
+                }
+
+            }   
+
                 ?>
                 ]);
 
@@ -539,6 +555,42 @@ if(isset($_POST["nodo"]) && isset($_POST["nodo"]) && isset($_POST["mascorto"])!=
                             echo "{from: '$p', to: '$key', label: '$value'},";     
                         };
                     }
+
+
+                    if(isset($_POST["nodo"]) && isset($_POST["nodo"]) && isset($_POST["mascorto"])!=null){
+
+                    
+                        $Mtriz = $_SESSION["Grafo"]->GetMatriz();
+                        
+                        $control = null;
+                        $Mc = $_SESSION["Grafo"]->caminoMasCorto($_POST["nodo"],$_POST["nodo2"]);
+
+                        foreach ($Mtriz as $key => $value) {
+                            $c = 0;
+                            
+                            if ($value != null) {   
+                                foreach ($value as $Val => $Aris) {
+                                   
+                                    if((count($corto)==1) && ($key == $Mc[0])&& ($Val == $Mc[0])){    
+                                        $sh = $Mc[0];        
+                                         echo "{from: '$sh', to: '$sh', label: '$Aris', color:{color:'green'}},";
+                                         
+                                     }
+                                    elseif((in_array($Val, $Mc)) && (in_array($key, $Mc)) && (end($Mc) != $key) && ($c == 0) && ($key != $Val) && ($control!=$Val)) {
+                                        echo "{from: '$key', to: '$Val', label: '$Aris', color:{color:'green'}},";
+                                        $c=1;
+                                        $control = $key;
+                                    }else{
+                                        echo "{from: '$key', to: '$Val', label: '$Aris'},";
+                                    }
+                                };
+                            }
+                        };
+                        
+                      }
+
+                    
+
                 ?>
                 ]);
 
