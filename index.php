@@ -495,11 +495,13 @@ if(isset($_POST["vertice_aver"]) && isset($_POST["VerV"])!=null){
 if(isset($_POST["nodo"]) && isset($_POST["nodo"]) && isset($_POST["mascorto"])!=null){
  
 
- /* print_r($_SESSION["Grafo"]->caminoMasCorto($_POST["nodo"],$_POST["nodo2"]));
- / $corto = $_SESSION["Grafo"]->caminoMasCorto($_POST["nodo"],$_POST["nodo2"]);
+ /*print_r($_SESSION["Grafo"]->caminoMasCorto($_POST["nodo"],$_POST["nodo2"]));
+ $corto = $_SESSION["Grafo"]->caminoMasCorto($_POST["nodo"],$_POST["nodo2"]);
   $c = $corto[0];
-  echo $c;
-*/
+  echo $c;*/
+  print_r($_SESSION["Grafo"]->GetMatriz());
+
+
 
 }
 
@@ -562,11 +564,12 @@ if(isset($_POST["nodo"]) && isset($_POST["nodo"]) && isset($_POST["mascorto"])!=
                     
                         $Mtriz = $_SESSION["Grafo"]->GetMatriz();
                         
-                        $control = null;
+                        
                         $Mc = $_SESSION["Grafo"]->caminoMasCorto($_POST["nodo"],$_POST["nodo2"]);
 
                         foreach ($Mtriz as $key => $value) {
                             $c = 0;
+                            $control = null;
                             
                             if ($value != null) {   
                                 foreach ($value as $Val => $Aris) {
@@ -576,13 +579,16 @@ if(isset($_POST["nodo"]) && isset($_POST["nodo"]) && isset($_POST["mascorto"])!=
                                          echo "{from: '$sh', to: '$sh', label: '$Aris', color:{color:'green'}},";
                                          
                                      }
-                                    elseif((in_array($Val, $Mc)) && (in_array($key, $Mc)) && (end($Mc) != $key) && ($c == 0) && ($key != $Val) && ($control!=$Val)) {
+                                    elseif((in_array($Val, $Mc)) && (in_array($key, $Mc)) && (end($Mc) != $key) && ($c == 0) && ($key != $Val) && ($control!=$Val) && ($Val != $_POST["nodo"])&& (array_search($key, $Mc ) < array_search($Val, $Mc ))) {
                                         echo "{from: '$key', to: '$Val', label: '$Aris', color:{color:'green'}},";
                                         $c=1;
                                         $control = $key;
+                                        
                                     }else{
+                                       
                                         echo "{from: '$key', to: '$Val', label: '$Aris'},";
-                                    }
+                                    
+                                }
                                 };
                             }
                         };
