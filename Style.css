@@ -17,6 +17,10 @@
 
 body {
   background-image: url('fondo.jpg');
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-size: cover;
 }
 
 .Vertice{
@@ -71,6 +75,17 @@ body {
     position: relative;
   }
 
+  .Recorridos{
+    width: 390px;
+    background: #24303c6c;
+    padding: 28px;
+    margin: auto;
+    margin-top: 35px;
+    border-radius: 15px;
+    font-family: 'consolas';
+    color: white;
+    position: relative;
+  }
   
 
 .Vertice h4 {
@@ -92,6 +107,12 @@ body {
     font-size: 22px;
     margin-bottom: 20px;
   }
+
+  .Recorridos h4 {
+    font-size: 22px;
+    margin-bottom: 20px;
+  }
+
 
 
 .item{

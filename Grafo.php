@@ -63,7 +63,15 @@ include('Vertice.php');
 
 			if(isset($this->vectorO[$O]) && isset($this->vectorO[$D])){
 
-				$this->matrizA[$O][$D] = $p;
+				if($p == null){
+					
+				$this->matrizA[$O][$D] = 1;
+
+				}else{
+
+					$this->matrizA[$O][$D] = $p;
+
+				}
 
 			}else{
 
@@ -79,7 +87,6 @@ include('Vertice.php');
 		public function GetAdyacentes($v){
 
 			return $this->matrizA[$v];
-
 		}
 
 		public function Grado_Salida($v){
@@ -193,6 +200,160 @@ include('Vertice.php');
 		}
 
 
+		
+
+		
+		public function Recorrer_anchura($n){
+
+			$cola = new SplQueue();
+			$msj = "";
+	
+				if ($n != null) {
+	
+					$cola->enqueue($n);
+	
+					while ($cola->count() > 0) {
+						$nodov = $cola->dequeue();
+	
+						if ($nodov->Getvisitado() == false) {
+							$nodov->Setvisitado(true);
+	
+							$msj = $msj.$nodov->Getid()."-";  
+
+					   		  $mat = self::GetAdyacentes($nodov->Getid());
+							    
+							if ($mat != null) {
+								
+					
+							foreach($mat as $key => $value) {
+								
+								$ver = self::GetVertice($key);
+    
+								$cola->enqueue($ver);
+											
+							}
+						  }
+						}
+					  }
+				    }
+
+				self::visitado_original();
+
+				return $msj;
+			}
+	
+	
+			public function Recorrer_profundidad($n){  
+	
+				$pila = new SplStack();
+				$msj = "";
+
+				if ($n != null) {
+	
+					$pila->push($n);
+	
+					while ($pila->count() > 0) {
+						$nodov = $pila->pop();
+	
+						if ($nodov->Getvisitado() == false) {
+	
+							$nodov->Setvisitado(true);
+	
+							$msj = $msj.$nodov->Getid()."-"; 
+							$mat = self::GetAdyacentes($nodov->Getid());
+							    
+							if ($mat != null) {
+								foreach($mat as $key => $value) {
+									$ver = self::GetVertice($key);
+									$pila->push($ver);			
+							 	}
+							}
+						}
+					}
+				}
+
+				 self::visitado_original();
+
+				 return $msj;
+			}
+	
+	
+	
+			public function caminoMasCorto($a,$b){
+	
+				$S = array();
+	
+				$Q = array();
+	
+				foreach(array_keys($this->matrizA) as $val) $Q[$val] = 99999;
+	
+				$Q[$a] = 0;
+	
+				//inicio calculo
+	
+				while(!empty($Q)){
+	
+					$min = array_search(min($Q), $Q);
+	
+					if($min == $b) break;
+	
+					if ($this->matrizA[$min] != null) {
+						
+					foreach($this->matrizA[$min] as $key=>$val) if(!empty($Q[$key]) && $Q[$min] + $val < $Q[$key]) {
+	
+						$Q[$key] = $Q[$min] + $val;
+	
+						$S[$key] = array($min, $Q[$key]);
+	
+					}
+
+				}
+	
+					unset($Q[$min]);
+	
+				}
+	
+				$path = array();
+	
+				$pos = $b;
+				
+				if(!empty($S[$b])){
+					if ($pos != null) {
+						while($pos != $a){
+			
+							$path[] = $pos;
+			
+							$pos = $S[$pos][0];
+	
+						}
+						}
+
+					
+							}else{
+						return "No se puede trazar un camino desde ".$a." hasta ".$b; 
+						
+					}
+				
+				
+	
+				$path[] = $a;
+	
+				$path = array_reverse($path);
+	
+				return $path;
+	
+			}
+	
+
+
+			public function visitado_original(){
+				$v = self::GetVector();
+				foreach ($v as $key => $value) {
+					$value->Setvisitado(false);
+				}
+			}
+	
+	
 	}
 
 

@@ -6,7 +6,8 @@
     if (isset($_SESSION["Grafo"])==false) {
       $_SESSION["Grafo"] = new Grafo();
     } 
-
+    global $activar;
+    
 ?>
 
 <!DOCTYPE html>
@@ -408,6 +409,8 @@ if(isset($_POST["vertice_aver"]) && isset($_POST["VerV"])!=null){
 
      <div id ="Grafo2"></div>
 
+    
+
     <?php 
 
 
@@ -462,7 +465,162 @@ if(isset($_POST["vertice_aver"]) && isset($_POST["VerV"])!=null){
         
     
     ?>
+
+    <form class="Recorridos" action="index.php" method="post">
+    
+    <h4>Recorridos</h4>
+
+    <input class = "item" placeholder= "Vertice Inicial" type= "text" name="nodo">
+    <input class = "item" placeholder= "Vertice Destino" type= "text" name="nodo2">
+    <input class = "Botom" type = "submit" value = "Recorrido de anchura"  name="Action">
+    <input class = "Botom" type = "submit" value = "Recorrido de profundidad"  name="Action">
+    <input class = "Botom" type = "submit" value = "Recorrido más corto"  name="Action">
+    
+    </form><br>
+ <?php 
+
+    $Recorrido = (isset($_POST["Action"]))?$_POST["Action"]:"";
+
+    switch ($Recorrido) {
+        case 'Recorrido de anchura':
+            if(empty($_POST["nodo"])){
+                echo "<script type='text/javascript'>alert('Vertice Inicial Vacio');</script>";
+            }else{
+                $Mtriz = $_SESSION["Grafo"]->GetMatriz();
+                $i = false; 
+                $p;
+                if($Mtriz != null){
+                    foreach ($Mtriz as $key => $value) {
+                        if ($key == $_POST["nodo"]) {
+                            $i = true;
+                        }
+                     }
+                    
+                }
+                
+               if ($i == false) {
+                    echo "<script type='text/javascript'>alert('Vertice no existe');</script>";
+               }else{
+                    $n = $_SESSION["Grafo"]->GetVertice($_POST["nodo"]);
+                    $msj = $_SESSION["Grafo"]->Recorrer_anchura($n);
+                    $p = count($_SESSION["Grafo"]->GetAdyacentes($_POST["nodo"]));
+
+                    if ($_SESSION["Grafo"]->GetAdyacentes($_POST["nodo"]) != null && (key($_SESSION["Grafo"]->GetAdyacentes($_POST["nodo"])) != $_POST["nodo"]) && ($p >= 1 )){
+                        echo "<script type='text/javascript'>alert('El recorrido de profundidad es $msj');</script>";
+    
+                       }elseif($_SESSION["Grafo"]->GetAdyacentes($_POST["nodo"]) != null && (key($_SESSION["Grafo"]->GetAdyacentes($_POST["nodo"])) == $_POST["nodo"]) && ($p > 1)){
+                        echo "<script type='text/javascript'>alert('El recorrido de profundidad es $msj');</script>";
+    
+                       }elseif($_SESSION["Grafo"]->GetAdyacentes($_POST["nodo"]) != null && (key($_SESSION["Grafo"]->GetAdyacentes($_POST["nodo"])) == $_POST["nodo"]) && ($p == 1)){
+                        echo "<script type='text/javascript'>alert('Nodo inicial no posee adyacentes diferentes a él mismo');</script>";
+                        
+                       }elseif($_SESSION["Grafo"]->GetAdyacentes($_POST["nodo"]) == null){
+                        echo "<script type='text/javascript'>alert('Nodo inicial invalido, no posee adyacentes');</script>";   
+                       }               }
+            }
+            break;
+
+        case 'Recorrido de profundidad':
+
+            if(empty($_POST["nodo"])){
+                echo "<script type='text/javascript'>alert('Vertice Inicial Vacio');</script>";
+            }else{
+
+                $Mtriz = $_SESSION["Grafo"]->GetMatriz();
+                $i = false; 
+                $p;
+                if($Mtriz != null){
+                    foreach ($Mtriz as $key => $value) {
+                        if ($key == $_POST["nodo"]) {
+                            $i = true;
+                        }
+                     }
+                    
+                }
+                
+                
+               if ($i == false) {
+                    echo "<script type='text/javascript'>alert('Vertice no existe');</script>";
+               }else{
+                    $n = $_SESSION["Grafo"]->GetVertice($_POST["nodo"]);
+                    $msj = $_SESSION["Grafo"]->Recorrer_profundidad($n);
+                    $p = count($_SESSION["Grafo"]->GetAdyacentes($_POST["nodo"]));
+
+                   if ($_SESSION["Grafo"]->GetAdyacentes($_POST["nodo"]) != null && (key($_SESSION["Grafo"]->GetAdyacentes($_POST["nodo"])) != $_POST["nodo"]) && ($p >= 1 )){
+                    echo "<script type='text/javascript'>alert('El recorrido de profundidad es $msj');</script>";
+
+                   }elseif($_SESSION["Grafo"]->GetAdyacentes($_POST["nodo"]) != null && (key($_SESSION["Grafo"]->GetAdyacentes($_POST["nodo"])) == $_POST["nodo"]) && ($p > 1)){
+                    echo "<script type='text/javascript'>alert('El recorrido de profundidad es $msj');</script>";
+
+                   }elseif($_SESSION["Grafo"]->GetAdyacentes($_POST["nodo"]) != null && (key($_SESSION["Grafo"]->GetAdyacentes($_POST["nodo"])) == $_POST["nodo"]) && ($p == 1)){
+                    echo "<script type='text/javascript'>alert('Nodo inicial no posee adyacentes diferentes a él mismo');</script>";
+                    
+                   }elseif($_SESSION["Grafo"]->GetAdyacentes($_POST["nodo"]) == null){
+                    echo "<script type='text/javascript'>alert('Nodo inicial invalido, no posee adyacentes');</script>";   
+                   }
+                    
+               }
+            }
+            break;
+
+           case 'Recorrido más corto':
+
+           		if (empty($_POST["nodo"]) && empty($_POST["nodo2"])) {
+                	echo "<script type='text/javascript'>alert('Vertice Inicial o Vertice Final Vacio');</script>";
+           		}else{
+           			$i = false;
+           			$d = false;
+
+                       $Mtriz = $_SESSION["Grafo"]->GetMatriz();
+                       if($Mtriz != null){
+                        foreach ($Mtriz as $key => $value) {
+                              
+                            if($_POST["nodo2"] == $_POST["nodo"] && $key == $_POST["nodo"]){
+                             $i = true;
+                             $d = true;
+                         
+                             }elseif($key == $_POST["nodo"]){
+                                     $i = true;
+                                 }elseif ($key == $_POST["nodo2"]) {
+                                     $d = true;
+                                 }
+                              }
+                       } 
+
+                        
+
+           			if ($i == false) {
+                    	echo "<script type='text/javascript'>alert('Vertice inicial no existe');</script>";
+                        break;
+           			}else{
+           				if ($d == false) {
+                    		echo "<script type='text/javascript'>alert('Vertice Destino no existe');</script>";
+                            break;
+           				}else{
+           					if (($_SESSION["Grafo"]->GetAdyacentes($_POST["nodo"]) != null)  && ($i!=false) && ($d!=false)) {
+           						$activar = true;
+                                $corto = $_SESSION["Grafo"]->caminoMasCorto($_POST["nodo"],$_POST["nodo2"]);
+                                if(is_array($corto)){
+                                    $activar = true;
+                                }elseif(!is_array($corto)){
+                                    $activar=false;
+                                    echo "<script type='text/javascript'>alert('$corto');</script>";
+                                }
+           					}
+           				}
+           			}
+           		}
+
+            break;    
+        
+        default:
+            # code...
+            break;
+    }
+    
+
  
+ ?>
         <script type="text/javascript">
 
             var nodos = new vis.DataSet([
@@ -483,6 +641,21 @@ if(isset($_POST["vertice_aver"]) && isset($_POST["VerV"])!=null){
                         echo "{id: '$p', label: '$p' },";
                     }
                 }
+
+                if(isset($_POST["nodo"]) && isset($_POST["nodo2"]) && isset($_POST["Action"])!=null && $activar == true){
+                    $Mtriz = $_SESSION["Grafo"]->GetMatriz();
+                    $corto = $_SESSION["Grafo"]->caminoMasCorto($_POST["nodo"],$_POST["nodo2"]);
+                   
+                    foreach ($Mtriz as $key => $value) {
+                        if(in_array($key,$corto)){
+                        echo "{id: '$key', label: '$key', color:{background:'green'}},";
+                          }else{
+                            echo "{id: '$key', label: '$key'},";
+                          }
+                }
+
+            }   
+
                 ?>
                 ]);
 
@@ -496,6 +669,46 @@ if(isset($_POST["vertice_aver"]) && isset($_POST["VerV"])!=null){
                             echo "{from: '$p', to: '$key', label: '$value'},";     
                         };
                     }
+
+
+                    if(isset($_POST["nodo"]) && isset($_POST["nodo2"]) && isset($_POST["Action"])!=null && $activar == true){
+
+                    
+                        $Mtriz = $_SESSION["Grafo"]->GetMatriz();
+                        
+                        
+                        $Mc = $_SESSION["Grafo"]->caminoMasCorto($_POST["nodo"],$_POST["nodo2"]);
+
+                        foreach ($Mtriz as $key => $value) {
+                            $c = 0;
+                            $control = null;
+                            
+                            if ($value != null) {   
+                                foreach ($value as $Val => $Aris) {
+                                   
+                                    if((count($Mc)==1) && ($key == $Mc[0])&& ($Val == $Mc[0])){    
+                                        $sh = $Mc[0];        
+                                         echo "{from: '$sh', to: '$sh', label: '$Aris', color:{color:'green'}},";
+                                         
+                                     }
+                                    elseif((in_array($Val, $Mc)) && (in_array($key, $Mc)) && (end($Mc) != $key) && ($c == 0) && ($key != $Val) && ($control!=$Val) && ($Val != $_POST["nodo"])&& (array_search($key, $Mc ) < array_search($Val, $Mc ) && $activar == true)) {
+                                        echo "{from: '$key', to: '$Val', label: '$Aris', color:{color:'green'}},";
+                                        $c=1;
+                                        $control = $key;
+                                        
+                                    }else{
+                                       
+                                        echo "{from: '$key', to: '$Val', label: '$Aris'},";
+                                    
+                                }
+                                };
+                            }
+                        };
+                        
+                      }
+
+                    
+
                 ?>
                 ]);
 
