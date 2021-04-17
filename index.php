@@ -7,7 +7,7 @@
       $_SESSION["Grafo"] = new Grafo();
     } 
     global $activar;
-
+    
 ?>
 
 <!DOCTYPE html>
@@ -484,11 +484,18 @@ if(isset($_POST["vertice_aver"]) && isset($_POST["VerV"])!=null){
     switch ($Recorrido) {
         case 'Recorrido de anchura':
             if(empty($_POST["nodo"])){
-                echo "<script type='text/javascript'>alert('Vertice Inicial, Vacio');</script>";
+                echo "<script type='text/javascript'>alert('Vertice Inicial Vacio');</script>";
             }else{
-               $n = $_SESSION["Grafo"]->GetVertice($_POST["nodo"]);
-               if ($n == null) {
-                    echo "<script type='text/javascript'>alert('Vertice no, existe');</script>";
+                $Mtriz = $_SESSION["Grafo"]->GetMatriz();
+                $i = false; 
+                foreach ($Mtriz as $key => $value) {
+                    if ($key == $_POST["nodo"]) {
+                        $i = true;
+                    }
+                 }
+
+               if ($i == false) {
+                    echo "<script type='text/javascript'>alert('Vertice no existe');</script>";
                }else{
                     $msj = $_SESSION["Grafo"]->Recorrer_anchura($n);
                     echo "<script type='text/javascript'>alert('El recorrido de Anchura es $msj');</script>";
@@ -499,11 +506,19 @@ if(isset($_POST["vertice_aver"]) && isset($_POST["VerV"])!=null){
         case 'Recorrido de profundidad':
 
             if(empty($_POST["nodo"])){
-                echo "<script type='text/javascript'>alert('Vertice Inicial, Vacio');</script>";
+                echo "<script type='text/javascript'>alert('Vertice Inicial Vacio');</script>";
             }else{
-               $n = $_SESSION["Grafo"]->GetVertice($_POST["nodo"]);
-               if ($n == null) {
-                    echo "<script type='text/javascript'>alert('Vertice no, existe');</script>";
+
+                $Mtriz = $_SESSION["Grafo"]->GetMatriz();
+                $i = false; 
+                foreach ($Mtriz as $key => $value) {
+                    if ($key == $_POST["nodo"]) {
+                        $i = true;
+                    }
+                 }
+
+               if ($i == false) {
+                    echo "<script type='text/javascript'>alert('Vertice no existe');</script>";
                }else{
                     $msj = $_SESSION["Grafo"]->Recorrer_profundidad($n);
                     echo "<script type='text/javascript'>alert('El recorrido de profundidad es $msj');</script>";
@@ -514,17 +529,32 @@ if(isset($_POST["vertice_aver"]) && isset($_POST["VerV"])!=null){
            case 'Recorrido más corto':
 
            		if (empty($_POST["nodo"]) && empty($_POST["nodo2"])) {
-                	echo "<script type='text/javascript'>alert('Vertice Inicial o Vertice Final, Vacio');</script>";
+                	echo "<script type='text/javascript'>alert('Vertice Inicial o Vertice Final Vacio');</script>";
            		}else{
-           			$i = $_SESSION["Grafo"]->GetVertice($_POST["nodo"]);
-           			$d = $_SESSION["Grafo"]->GetVertice($_POST["nodo2"]);
-           			if ($i == null) {
-                    	echo "<script type='text/javascript'>alert('Vertice inicial no, existe');</script>";
+           			$i = false;
+           			$d = false;
+
+                       $Mtriz = $_SESSION["Grafo"]->GetMatriz();
+                       
+                       
+
+                        foreach ($Mtriz as $key => $value) {
+                            if ($key == $_POST["nodo"]) {
+                                $i = true;
+                            }elseif($key == $_POST["nodo2"]){
+                                $d = true;
+                            }
+                         }
+
+           			if ($i == false) {
+                    	echo "<script type='text/javascript'>alert('Vertice inicial no existe');</script>";
+                        break;
            			}else{
-           				if ($d == null) {
-                    		echo "<script type='text/javascript'>alert('Vertice Destino no, existe');</script>";
+           				if ($d == false) {
+                    		echo "<script type='text/javascript'>alert('Vertice Destino no existe');</script>";
+                            break;
            				}else{
-           					if ($_SESSION["Grafo"]->GetAdyacentes($i->Getid()) != null) {
+           					if (($_SESSION["Grafo"]->GetAdyacentes($_POST["nodo"]) != null)  && ($i!=false) && ($d!=false)) {
            						$activar = true;
            					}
            				}
@@ -591,7 +621,7 @@ if(isset($_POST["vertice_aver"]) && isset($_POST["VerV"])!=null){
                     }
 
 
-                    if(isset($_POST["nodo"]) && isset($_POST["nodo2"]) && isset($_POST["Action"])!=null){
+                    if(isset($_POST["nodo"]) && isset($_POST["nodo2"]) && isset($_POST["Action"])!=null && $activar == true){
 
                     
                         $Mtriz = $_SESSION["Grafo"]->GetMatriz();
@@ -606,7 +636,7 @@ if(isset($_POST["vertice_aver"]) && isset($_POST["VerV"])!=null){
                             if ($value != null) {   
                                 foreach ($value as $Val => $Aris) {
                                    
-                                    if((count($Mc)==1) && ($key == $Mc[0])&& ($Val == $Mc[0]) && $activar == true){    
+                                    if((count($Mc)==1) && ($key == $Mc[0])&& ($Val == $Mc[0])){    
                                         $sh = $Mc[0];        
                                          echo "{from: '$sh', to: '$sh', label: '$Aris', color:{color:'green'}},";
                                          
