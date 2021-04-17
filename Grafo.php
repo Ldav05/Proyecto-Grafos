@@ -87,7 +87,6 @@ include('Vertice.php');
 		public function GetAdyacentes($v){
 
 			return $this->matrizA[$v];
-
 		}
 
 		public function Grado_Salida($v){
@@ -207,6 +206,7 @@ include('Vertice.php');
 		public function Recorrer_anchura($n){
 
 			$cola = new SplQueue();
+			$msj = "";
 	
 				if ($n != null) {
 	
@@ -218,7 +218,7 @@ include('Vertice.php');
 						if ($nodov->Getvisitado() == false) {
 							$nodov->Setvisitado(true);
 	
-							echo $nodov->Getid();  
+							$msj = $msj.$nodov->Getid()."-";  
 
 					   		  $mat = self::GetAdyacentes($nodov->Getid());
 							    
@@ -230,21 +230,24 @@ include('Vertice.php');
 								$ver = self::GetVertice($key);
     
 								$cola->enqueue($ver);
-								
-				}
-			  }
-			}
-		  }
-	    }
+											
+							}
+						  }
+						}
+					  }
+				    }
 
-		self::visitado_original();
-}
+				self::visitado_original();
+
+				return $msj;
+			}
 	
 	
 			public function Recorrer_profundidad($n){  
 	
-			$pila = new SplStack();
-	
+				$pila = new SplStack();
+				$msj = "";
+
 				if ($n != null) {
 	
 					$pila->push($n);
@@ -256,26 +259,23 @@ include('Vertice.php');
 	
 							$nodov->Setvisitado(true);
 	
-							echo $nodov->Getid(); 
+							$msj = $msj.$nodov->Getid()."-"; 
 							$mat = self::GetAdyacentes($nodov->Getid());
 							    
 							if ($mat != null) {
-								
-					
-							foreach($mat as $key => $value) {
-								
-								$ver = self::GetVertice($key);
-								$pila->push($ver);
-    
-												
-			  }
-			}
-		  }
-		}
-	  }
+								foreach($mat as $key => $value) {
+									$ver = self::GetVertice($key);
+									$pila->push($ver);			
+							 	}
+							}
+						}
+					}
+				}
 
-					  self::visitado_original();
-}
+				 self::visitado_original();
+
+				 return $msj;
+			}
 	
 	
 	
@@ -316,13 +316,15 @@ include('Vertice.php');
 				$path = array();
 	
 				$pos = $b;
-	
-				while($pos != $a){
-	
-					$path[] = $pos;
-	
-					$pos = $S[$pos][0];
-	
+				if ($pos != null) {
+
+					while($pos != $a){
+		
+						$path[] = $pos;
+		
+						$pos = $S[$pos][0];
+
+					}
 				}
 	
 				$path[] = $a;
@@ -336,7 +338,7 @@ include('Vertice.php');
 
 
 			public function visitado_original(){
-				$v =self::GetVector();
+				$v = self::GetVector();
 				foreach ($v as $key => $value) {
 					$value->Setvisitado(false);
 				}
