@@ -497,6 +497,7 @@ if(isset($_POST["vertice_aver"]) && isset($_POST["VerV"])!=null){
                if ($i == false) {
                     echo "<script type='text/javascript'>alert('Vertice no existe');</script>";
                }else{
+                    $n = $_SESSION["Grafo"]->GetVertice($_POST["nodo"]);
                     $msj = $_SESSION["Grafo"]->Recorrer_anchura($n);
                     echo "<script type='text/javascript'>alert('El recorrido de Anchura es $msj');</script>";
                }
@@ -520,6 +521,7 @@ if(isset($_POST["vertice_aver"]) && isset($_POST["VerV"])!=null){
                if ($i == false) {
                     echo "<script type='text/javascript'>alert('Vertice no existe');</script>";
                }else{
+                    $n = $_SESSION["Grafo"]->GetVertice($_POST["nodo"]);
                     $msj = $_SESSION["Grafo"]->Recorrer_profundidad($n);
                     echo "<script type='text/javascript'>alert('El recorrido de profundidad es $msj');</script>";
                }
@@ -535,13 +537,17 @@ if(isset($_POST["vertice_aver"]) && isset($_POST["VerV"])!=null){
            			$d = false;
 
                        $Mtriz = $_SESSION["Grafo"]->GetMatriz();
-                       
-                       
+                     
 
                         foreach ($Mtriz as $key => $value) {
-                            if ($key == $_POST["nodo"]) {
+                              
+                       if($_POST["nodo2"] == $_POST["nodo"] && $key == $_POST["nodo"]){
+                        $i = true;
+                        $d = true;
+                    
+                        }elseif($key == $_POST["nodo"]){
                                 $i = true;
-                            }elseif($key == $_POST["nodo2"]){
+                            }elseif ($key == $_POST["nodo2"]) {
                                 $d = true;
                             }
                          }
