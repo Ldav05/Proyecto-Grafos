@@ -316,16 +316,25 @@ include('Vertice.php');
 				$path = array();
 	
 				$pos = $b;
-				if ($pos != null) {
+				
+				if(!empty($S[$b])){
+					if ($pos != null) {
+						while($pos != $a){
+			
+							$path[] = $pos;
+			
+							$pos = $S[$pos][0];
+	
+						}
+						}
 
-					while($pos != $a){
-		
-						$path[] = $pos;
-		
-						$pos = $S[$pos][0];
-
+					
+							}else{
+						return "No se puede trazar un camino desde ".$a." hasta ".$b; 
+						
 					}
-				}
+				
+				
 	
 				$path[] = $a;
 	

@@ -495,7 +495,7 @@ if(isset($_POST["vertice_aver"]) && isset($_POST["VerV"])!=null){
                             $i = true;
                         }
                      }
-                     $p = count($_SESSION["Grafo"]->GetAdyacentes($_POST["nodo"]));
+                    
                 }
                 
                if ($i == false) {
@@ -503,6 +503,7 @@ if(isset($_POST["vertice_aver"]) && isset($_POST["VerV"])!=null){
                }else{
                     $n = $_SESSION["Grafo"]->GetVertice($_POST["nodo"]);
                     $msj = $_SESSION["Grafo"]->Recorrer_anchura($n);
+                    $p = count($_SESSION["Grafo"]->GetAdyacentes($_POST["nodo"]));
 
                     if ($_SESSION["Grafo"]->GetAdyacentes($_POST["nodo"]) != null && (key($_SESSION["Grafo"]->GetAdyacentes($_POST["nodo"])) != $_POST["nodo"]) && ($p >= 1 )){
                         echo "<script type='text/javascript'>alert('El recorrido de profundidad es $msj');</script>";
@@ -511,7 +512,7 @@ if(isset($_POST["vertice_aver"]) && isset($_POST["VerV"])!=null){
                         echo "<script type='text/javascript'>alert('El recorrido de profundidad es $msj');</script>";
     
                        }elseif($_SESSION["Grafo"]->GetAdyacentes($_POST["nodo"]) != null && (key($_SESSION["Grafo"]->GetAdyacentes($_POST["nodo"])) == $_POST["nodo"]) && ($p == 1)){
-                        echo "<script type='text/javascript'>alert('Nodo inicial invalido, no posee adyacentes diferentes a él mismo');</script>";
+                        echo "<script type='text/javascript'>alert('Nodo inicial no posee adyacentes diferentes a él mismo');</script>";
                         
                        }elseif($_SESSION["Grafo"]->GetAdyacentes($_POST["nodo"]) == null){
                         echo "<script type='text/javascript'>alert('Nodo inicial invalido, no posee adyacentes');</script>";   
@@ -534,7 +535,7 @@ if(isset($_POST["vertice_aver"]) && isset($_POST["VerV"])!=null){
                             $i = true;
                         }
                      }
-                     $p = count($_SESSION["Grafo"]->GetAdyacentes($_POST["nodo"]));
+                    
                 }
                 
                 
@@ -543,6 +544,8 @@ if(isset($_POST["vertice_aver"]) && isset($_POST["VerV"])!=null){
                }else{
                     $n = $_SESSION["Grafo"]->GetVertice($_POST["nodo"]);
                     $msj = $_SESSION["Grafo"]->Recorrer_profundidad($n);
+                    $p = count($_SESSION["Grafo"]->GetAdyacentes($_POST["nodo"]));
+
                    if ($_SESSION["Grafo"]->GetAdyacentes($_POST["nodo"]) != null && (key($_SESSION["Grafo"]->GetAdyacentes($_POST["nodo"])) != $_POST["nodo"]) && ($p >= 1 )){
                     echo "<script type='text/javascript'>alert('El recorrido de profundidad es $msj');</script>";
 
@@ -550,7 +553,7 @@ if(isset($_POST["vertice_aver"]) && isset($_POST["VerV"])!=null){
                     echo "<script type='text/javascript'>alert('El recorrido de profundidad es $msj');</script>";
 
                    }elseif($_SESSION["Grafo"]->GetAdyacentes($_POST["nodo"]) != null && (key($_SESSION["Grafo"]->GetAdyacentes($_POST["nodo"])) == $_POST["nodo"]) && ($p == 1)){
-                    echo "<script type='text/javascript'>alert('Nodo inicial invalido, no posee adyacentes diferentes a él mismo');</script>";
+                    echo "<script type='text/javascript'>alert('Nodo inicial no posee adyacentes diferentes a él mismo');</script>";
                     
                    }elseif($_SESSION["Grafo"]->GetAdyacentes($_POST["nodo"]) == null){
                     echo "<script type='text/javascript'>alert('Nodo inicial invalido, no posee adyacentes');</script>";   
@@ -596,6 +599,13 @@ if(isset($_POST["vertice_aver"]) && isset($_POST["VerV"])!=null){
            				}else{
            					if (($_SESSION["Grafo"]->GetAdyacentes($_POST["nodo"]) != null)  && ($i!=false) && ($d!=false)) {
            						$activar = true;
+                                $corto = $_SESSION["Grafo"]->caminoMasCorto($_POST["nodo"],$_POST["nodo2"]);
+                                if(is_array($corto)){
+                                    $activar = true;
+                                }elseif(!is_array($corto)){
+                                    $activar=false;
+                                    echo "<script type='text/javascript'>alert('$corto');</script>";
+                                }
            					}
            				}
            			}
