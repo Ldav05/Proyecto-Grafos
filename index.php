@@ -276,7 +276,7 @@ if(isset($_POST["vertice_aver"]) && isset($_POST["VerV"])!=null){
 
                     echo "<script type='text/javascript'>alert('Campos vacios');</script>";
                 }else{
-                        
+                if($_POST["peso"] >= 0){      
                 $valor = $_SESSION["Grafo"]->AgregarArista($_POST["v_origen"],$_POST["v_destino"],$_POST["peso"]);
                 
                 if ($valor == true) {
@@ -289,7 +289,10 @@ if(isset($_POST["vertice_aver"]) && isset($_POST["VerV"])!=null){
 
                 echo "<script type='text/javascript'>alert('$msj');</script>";
 
+            }else{
+                echo "<script type='text/javascript'>alert('No se aceptan números negativos');</script>";
             }
+        }  
             break;
 
             case 'Eliminar arista':
