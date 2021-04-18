@@ -10,8 +10,10 @@ Proyecto de estructura de datos, semestre 4, corte 2
 * Visualizar el grafo
 * Visualizar adyacentes
 * Ver el grado de un vertice
+* Recorrido por profundidad y anchuracion
+* Camino más corto
 
-## Construido con 🛠️
+## Construido con 🛠️ 
 
 * PHP
 * JavaScript

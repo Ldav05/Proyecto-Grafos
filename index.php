@@ -691,13 +691,13 @@ if(isset($_POST["vertice_aver"]) && isset($_POST["VerV"])!=null){
                                          echo "{from: '$sh', to: '$sh', label: '$Aris', color:{color:'green'}},";
                                          
                                      }
-                                    elseif((in_array($Val, $Mc)) && (in_array($key, $Mc)) && (end($Mc) != $key) && ($c == 0) && ($key != $Val) && ($control!=$Val) && ($Val != $_POST["nodo"])&& (array_search($key, $Mc ) < array_search($Val, $Mc ) && $activar == true)) {
+                                    elseif((in_array($Val, $Mc)) && (in_array($key, $Mc)) && (end($Mc) != $key) && ($c == 0) && ($key != $Val) && ($control!=$Val) && ($Val != $_POST["nodo"])&& (array_search($key, $Mc ) < array_search($Val, $Mc ) && $activar == true) && (array_search($key, $Mc) == array_search($Val, $Mc)-1)) {
                                         echo "{from: '$key', to: '$Val', label: '$Aris', color:{color:'green'}},";
                                         $c=1;
                                         $control = $key;
                                         
                                     }else{
-                                       
+                                        
                                         echo "{from: '$key', to: '$Val', label: '$Aris'},";
                                     
                                 }
